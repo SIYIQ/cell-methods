@@ -17,6 +17,8 @@
 
 **本集合未包含：** `GHIST`。
 
+> **关于原生单细胞方法：** 本 benchmark 涉及的方法中，**GHIST** 与 **SpatialEx** 是两个原生聚焦单细胞（细胞级）分辨率的方法——GHIST（[SydneyBioX/GHIST](https://github.com/SydneyBioX/GHIST)，Nat. Methods）从 H&E 图像直接预测单细胞分辨率的空间基因表达；SpatialEx（Nat. Methods）面向 Xenium 等单细胞分辨率平台做组织学锚定的多组学整合。
+
 ## 基础模型权重
 
 以下基础模型在配置文件中被引用，但**不包含在本仓库中**。请单独下载，并更新各方法 config 中的路径。
