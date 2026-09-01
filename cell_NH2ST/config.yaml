@@ -1,0 +1,40 @@
+# cell_NH2ST training configuration.
+#
+# Cell-level adaptation of HST_NH2ST. Consumes the shared cell-level data
+# interface at /home/sb202604/cell-benchmark/processed_cell/.
+
+# ---- Datasets ----
+datasets:
+  - hSkin_Melanoma
+  - hColon_Non_diseased
+  - mouse_Colon
+  - Human_Breast_Cancer
+
+# ---- CellNGHist2ST model ----
+emb_dim: 512
+depth1: 2
+num_heads1: 8
+mlp_ratio1: 2.0
+dropout1: 0.1
+temperature1: 0.05
+temperature2: 0.05
+loss_ratio1: 1.0
+loss_ratio2: 0.5
+
+# ---- Neighbor sampling ----
+neighbor_k: 8          # neighbors per cell (including self)
+num_neighbors: 7       # SpatialEx hypergraph KNN parameter
+
+# ---- Training ----
+batch_size: 64
+epochs: 15
+lr: 0.0001
+wd: 0.0
+
+seeds: [42, 43, 44]
+
+# Logging / output
+output_root: ./runs
+
+# Device
+device: cuda:0

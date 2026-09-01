@@ -1,0 +1,13 @@
+[offline cache] enabled at: /home/sb202604/hest-bench-pretreat
+
+Task Task5_COAD: saving runs to ./runs/Task5_COAD/v3/
+Task Task5_COAD: selected 50 HVGs from all 4 slides.
+
+============================================================
+Task: Task5_COAD | Fold: 0/2 | Seed: 42
+Train slides (1): ['TENX111.h5']
+Test slides  (3): ['TENX147.h5', 'TENX148.h5', 'TENX149.h5']
+============================================================
+Using task-level HVGs (50 genes).
+Train spots: 5079  Val spots: 5079
+Trainable params: 56,027,194 / 56,027,194

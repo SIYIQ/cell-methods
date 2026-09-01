@@ -1,0 +1,48 @@
+# =============================================================================
+# H0-mini single-cell Xenium linear-probe config — processed_cell mode
+# =============================================================================
+# Uses the shared cell-level interface (same cells as cell_HST_middle / novae /
+# STFlow). Features are read from adata.obsm['he'] (precomputed UNI 1024-d
+# features) instead of encoding patches. This effectively runs a UNI linear
+# probe on the unified cell set.
+
+# Data root for the single-cell benchmark
+processed_root: /home/sb202604/cell-benchmark/processed
+
+use_processed_cell: true
+processed_cell_root: /home/sb202604/cell-benchmark/processed_cell
+
+# Datasets to evaluate (must match DATASETS in predict.py)
+datasets:
+  - hSkin_Melanoma
+  - hColon_Non_diseased
+  - mouse_Colon
+  - Human_Breast_Cancer
+
+# Gene selection
+n_top_hvgs: 50
+
+# H0-mini model (unused in processed_cell mode but kept)
+h0mini_local_path: /home/sb202604/H0-mini
+
+# Inference batch size for the image tower (unused in processed_cell mode)
+img_batch_size: 64
+
+# Linear probe (HEST-Bench protocol)
+pca_components: 256
+ridge_solver: lsqr
+ridge_alpha: null
+ridge_max_iter: 1000
+
+# Preprocessing
+min_counts: 10
+
+# Project-local feature cache
+cache_root: ./cache
+
+# Seeds
+seeds: [42]
+
+# Device and output
+device: cuda:4
+output_root: ./runs

@@ -1,0 +1,58 @@
+# HST_NH2ST Cross-Validation Training Configuration
+# Data pipeline identical to HST-middle; model/training preserves NH2ST design.
+
+# ---- Offline preprocessed cache ----
+offline_cache_root: /home/sb202604/hest-bench-pretreat
+
+# ---- HVG selection ----
+n_top_hvgs: 50
+
+# ---- NGHist2ST Model (preserve NH2ST design) ----
+emb_dim: 512
+depth1: 2
+num_heads1: 8
+mlp_ratio1: 2.0
+dropout1: 0.1
+res_neighbor: [5, 5]
+learning_rate: 0.0001
+temperature1: 0.05
+temperature2: 0.05
+loss_ratio1: 1.0
+loss_ratio2: 0.5
+
+# ---- Neighbor sampling ----
+neighbor_k: 8
+dist_thresh_um: 150.0
+pixel_size_um: 0.46
+
+# ---- Data augmentation ----
+augmentation:
+  enabled: true
+  p_flip_h: 0.5
+  p_flip_v: 0.5
+  p_rot90: 0.5
+  brightness: 0.15
+  contrast: 0.15
+  saturation: 0.1
+
+# ---- Training settings ----
+epochs: 15
+lr: 0.0001
+wd: 0.0
+batch_size: 64
+grad_clip: 1.0
+step_size: 50
+gamma: 0.9
+
+# Eval frequency
+eval_interval: 3
+
+# Early stopping
+early_stop_patience: 6
+
+# ---- Random seeds ----
+seeds: [42, 43, 44]
+
+# ---- Device and output ----
+device: cuda
+output_root: ./runs

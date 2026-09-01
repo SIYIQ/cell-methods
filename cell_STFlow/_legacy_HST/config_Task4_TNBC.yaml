@@ -1,0 +1,89 @@
+# HST_STFlow per-task config: Task4_TNBC
+# Mirrors HST_novae's version for data / training hyperparameters;
+# STFlow architecture stays at STFlow defaults across all tasks.
+
+# ---- Offline preprocessed cache ----
+offline_cache_root: /home/sb202604/hest-bench-pretreat
+
+# HEST-Bench Cross-Validation Training Configuration
+# Task4_SKCM v2: 针对 v1 fold0 过拟合 (gap=0.22) 的正则化加强方案
+# fold1 已接近天花板 (test=0.755, gap=0.05),改动需保证 fold0 涨幅 > fold1 跌幅
+
+# ---- Model architecture ----
+encoder_name: h0_mini
+encoder_unfreeze: true
+encoder_unfreeze_last_n_blocks: 2     # v1=4 → 2,减少 backbone 切片特异性过拟合
+encoder_local_path: /home/sb202604/H0-mini
+
+n_genes: 50
+n_top_hvgs: 50
+
+encoder_out_dim: 768
+
+# ---- STFlow Denoiser hyperparameters (STFlow defaults) ----
+stflow_hidden_dim: 128
+stflow_pairwise_hidden_dim: 128
+stflow_n_layers: 4
+stflow_n_heads: 4
+stflow_dropout: 0.2
+stflow_attn_dropout: 0.2
+stflow_n_neighbors: 8
+stflow_activation: swiglu
+
+# ---- STFlow flow-matching sampling ----
+stflow_n_sample_steps: 5
+stflow_prior_sampler: zinb
+stflow_zinb_logits: 0.1
+stflow_zinb_total_count: 1.0
+stflow_zinb_zi_logits: 0.0
+
+# ---- Graph edge settings ----
+pixel_size_um: 0.46
+dist_thresh_um: 150.0
+
+# ---- Data augmentation ----
+augmentation:
+  enabled: true
+  p_flip_h: 0.5
+  p_flip_v: 0.5
+  p_rot90: 0.5
+  brightness: 0.25                    # v1=0.15 → 0.25
+  contrast: 0.25                      # v1=0.15 → 0.25
+  saturation: 0.15                    # v1=0.1  → 0.15
+  hue: 0.03                           # 新增显式值(代码默认 0.02)
+
+
+
+# ---- Grid + Halo training ----
+grid_training:
+  enabled: true
+  n_spots_per_patch: 512
+  n_patches_per_slide: -1
+  n_shift_steps: 4
+  halo_dist_thresh_um: 150.0
+  cycle_mode: false
+
+# ---- Training settings ----
+epochs: 300                           # v1=400 → 300(best test 在 ~230,400 多余且过拟合)
+lr: 1.0e-4
+encoder_lr: 1.0e-5                    # v1=1e-5 → 5e-6,backbone 学更慢
+wd: 1.0e-4                            # v1=1e-4 → 3e-4
+img_batch_size: 32
+full_graph: false
+grad_clip: 1.0
+
+spot_split_ratios: [0.7, 0.1, 0.2]
+eval_interval: 1
+early_stop_patience: 4
+
+# Cosine annealing 用的(其余 lr_* 字段在当前代码里实际未生效,留作占位)
+lr_factor: 0.5
+lr_patience: 15
+lr_threshold: 1.0e-5
+lr_min: 1.0e-6
+lr_cooldown: 0
+
+seeds: [42, 43, 44]
+
+device: cuda
+output_root: ./runs

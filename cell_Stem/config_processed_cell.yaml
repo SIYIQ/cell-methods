@@ -1,0 +1,62 @@
+# =============================================================================
+# Stem single-cell Xenium comparison config — processed_cell mode
+# =============================================================================
+# Uses the shared cell-level interface (same cells as cell_HST_middle / novae /
+# STFlow). Features are read from adata.obsm['he'] (precomputed UNI 1024-d
+# features) instead of encoding patches. CONCH is disabled in this mode.
+
+# Data root for the single-cell benchmark
+processed_root: /home/sb202604/cell-benchmark/processed
+
+use_processed_cell: true
+processed_cell_root: /home/sb202604/cell-benchmark/processed_cell
+
+# Datasets to evaluate (must match DATASETS in predict.py)
+datasets:
+  - hSkin_Melanoma
+  - hColon_Non_diseased
+  - mouse_Colon
+  - Human_Breast_Cancer
+
+# Gene selection
+n_top_hvgs: 50
+
+# Preprocessing
+min_counts: 10
+
+# Model weights (UNI still needed for architecture init; CONCH unused)
+uni_local_path: /home/sb202604/UNI
+conch_local_path: /home/sb202604/CONCH
+
+# Encoder inference batch sizes (unused in processed_cell mode but kept)
+uni_batch_size: 64
+conch_batch_size: 16
+
+# Project-local feature cache
+cache_root: ./cache
+
+# Stem DiT architecture (small config)
+model: Stem
+DiT_num_blocks: 12
+hidden_size: 384
+num_heads: 6
+
+# Training
+lr: 1.0e-4
+train_steps: 30000
+batch_size: 256
+log_every: 100
+ckpt_every: 0        # set >0 to save intermediate checkpoints
+augment_p: 0.0
+
+# Sampling
+num_sampling_steps: 250
+sample_num_per_cond: 10
+sampling_batch_size: 128
+
+# Seeds
+seeds: [42]
+
+# Device and output
+device: cuda:4
+output_root: ./runs

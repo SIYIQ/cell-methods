@@ -1,0 +1,93 @@
+# HST_STFlow per-task config: Task9_DLBCL
+# Mirrors HST_novae's version for data / training hyperparameters;
+# STFlow architecture stays at STFlow defaults across all tasks.
+
+# ---- Offline preprocessed cache ----
+offline_cache_root: /home/sb202604/hest-bench-pretreat
+
+# HEST-Bench Cross-Validation Training Configuration
+
+# ---- Model architecture ----
+encoder_name: h0_mini
+encoder_unfreeze: true
+encoder_unfreeze_last_n_blocks: 4   # 新增
+encoder_local_path: /home/sb202604/H0-mini
+
+n_genes: 50
+n_top_hvgs: 50
+
+encoder_out_dim: 768
+
+# ---- STFlow Denoiser hyperparameters (STFlow defaults) ----
+stflow_hidden_dim: 128
+stflow_pairwise_hidden_dim: 128
+stflow_n_layers: 4
+stflow_n_heads: 4
+stflow_dropout: 0.2
+stflow_attn_dropout: 0.2
+stflow_n_neighbors: 8
+stflow_activation: swiglu
+
+# ---- STFlow flow-matching sampling ----
+stflow_n_sample_steps: 5
+stflow_prior_sampler: zinb
+stflow_zinb_logits: 0.1
+stflow_zinb_total_count: 1.0
+stflow_zinb_zi_logits: 0.0
+
+# ---- Graph edge settings ----
+pixel_size_um: 0.46
+dist_thresh_um: 150.0
+
+# ---- Data augmentation ----
+augmentation:
+  enabled: true
+  p_flip_h: 0.5
+  p_flip_v: 0.5
+  p_rot90: 0.5
+  brightness: 0.15
+  contrast: 0.15
+  saturation: 0.1
+
+
+# loss_type: mse
+# ---- Grid + Halo training (for large slides, controls peak memory) ----
+grid_training:
+  enabled: true
+  n_spots_per_patch: 512        # Target spots per grid cell
+  n_patches_per_slide: 5       # -1 = process ALL grid cells; >0 = sample subset
+  n_shift_steps: 4              # Sliding-window positions
+  halo_dist_thresh_um: 150.0    # Halo radius
+  cycle_mode: false             # true = sequential cycling; false = random
+
+# ---- Training settings ----
+epochs: 400
+lr: 1.0e-4
+encoder_lr: 1.0e-5
+wd: 1.0e-4
+img_batch_size: 32
+full_graph: false
+grad_clip: 1.0
+
+# Spot-level split within train slides
+spot_split_ratios: [0.7, 0.1, 0.2]
+
+# Eval frequency (full-slide eval on train slides)
+eval_interval: 1
+
+# Early stopping
+early_stop_patience: 40
+
+# Learning rate schedule
+lr_factor: 0.5
+lr_patience: 15
+lr_threshold: 1.0e-5
+lr_min: 1.0e-6
+lr_cooldown: 0
+
+# ---- Random seeds ----
+seeds: [42, 43, 44]
+
+# ---- Device and output ----
+device: cuda
+output_root: ./runs

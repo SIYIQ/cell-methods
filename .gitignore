@@ -1,0 +1,40 @@
+# Training outputs and caches
+runs/
+runs_native/
+cache/
+data_prep/
+data_demo/
+
+# Python build artifacts
+__pycache__/
+*.egg-info/
+*.pyc
+*.pyo
+.DS_Store
+
+# Model weights and checkpoints
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Generated data / predictions
+*.npy
+*.npz
+*.h5ad
+*.h5
+*.tif
+*.tiff
+*.ome.tif
+*.ome.tiff
+*.csv
+
+# Result summaries
+test_results*.json
+result.json
+combined_sparsification_curves.json
+
+# Editor / OS
+*.swp
+*.swo
+*~

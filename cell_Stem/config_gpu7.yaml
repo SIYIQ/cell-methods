@@ -1,0 +1,26 @@
+processed_root: /home/sb202604/cell-benchmark/processed
+datasets:
+  - hSkin_Melanoma
+n_top_hvgs: 50
+min_counts: 10
+uni_local_path: /home/sb202604/UNI
+conch_local_path: /home/sb202604/CONCH
+uni_batch_size: 64
+conch_batch_size: 16
+cache_root: ./cache
+model: Stem
+DiT_num_blocks: 12
+hidden_size: 384
+num_heads: 6
+lr: 1.0e-4
+train_steps: 500
+batch_size: 256
+log_every: 100
+ckpt_every: 0
+augment_p: 0.0
+num_sampling_steps: 100
+sample_num_per_cond: 2
+sampling_batch_size: 128
+seeds: [42]
+device: cuda:7
+output_root: ./runs

@@ -1,0 +1,47 @@
+# cell_MERGE training configuration.
+#
+# Cell-level adaptation of HST_MERGE. Consumes the shared cell-level data
+# interface at /home/sb202604/cell-benchmark/processed_cell/.
+
+# ---- Datasets ----
+datasets:
+  - hSkin_Melanoma
+  - hColon_Non_diseased
+  - mouse_Colon
+  - Human_Breast_Cancer
+
+# ---- Spatial graph ----
+num_neighbors: 7
+
+# ---- MLP stage (replaces CNN) ----
+mlp_epochs: 15
+mlp_lr: 5.0e-5
+mlp_batch_size: 8
+mlp_dropout: 0.2
+mlp_step_size: 2
+mlp_gamma: 0.5
+
+# ---- GNN stage (GATNet refinement) ----
+gnn_epochs: 400
+gnn_lr: 1.0e-3
+gnn_batch_size: 512     # seed nodes per GNN mini-batch
+gnn_num_neighbors: [5, 5, 5, 5]  # one value per GAT layer; -1 = all neighbors
+gnn_attn_heads: 8
+gnn_drop_edge: 0.2
+gnn_alpha: 0.0           # correlation loss weight (0 = disabled)
+gnn_warmup_steps: 10
+gnn_hierarchical: true
+gnn_spatial_clusters: 5
+gnn_feature_clusters: 5
+
+# ---- Training (kept for interface parity) ----
+epochs: 500
+lr: 1.0e-3
+
+seeds: [42, 43, 44]
+
+# Logging / output
+output_root: ./runs
+
+# Device
+device: cuda:0

@@ -1,0 +1,98 @@
+# HST_STFlow Cross-Validation Training Configuration
+#
+# Mirror of HST-middle/h0mini_official_offline/config.yaml and
+# HST_novae/config.yaml. The data pipeline (offline cache, encoder,
+# HVGs, augmentation, grid+halo, CV settings, epochs/lr/wd/early stop)
+# is identical so the runs differ only in the gene-prediction model.
+#
+# The `stflow_*` keys are passed straight through to STFlow's native
+# Denoiser / Interpolant (see stflow.app.flow.train defaults). We keep
+# STFlow's defaults verbatim so this script trains STFlow's own model
+# without any architectural changes — only the data interface is
+# adapted to read HEST-bench patches via FlexibleImageEncoder instead
+# of pre-extracted UNI/GigaPath embeddings.
+
+# ---- Offline preprocessed cache ----
+offline_cache_root: /home/sb202604/hest-bench-pretreat
+
+# ---- Image encoder (matches HST-middle / HST_novae verbatim) ----
+encoder_name: h0_mini
+encoder_unfreeze: false
+encoder_unfreeze_last_n_blocks: 4
+encoder_local_path: /home/sb202604/H0-mini
+# Width of the per-spot vector handed to STFlow's Denoiser. We pick the
+# encoder's native dim (768 for h0_mini, 1024 for UNI) so the projector
+# is a 1:1 linear that mirrors STFlow's "feature_dim" assumption when
+# it consumes pre-extracted UNI features in the original repo.
+encoder_out_dim: 768
+
+n_genes: 50
+n_top_hvgs: 50
+
+# ---- STFlow Denoiser hyperparameters (STFlow defaults) ----
+# See stflow.app.flow.train.py defaults for the source values.
+stflow_hidden_dim: 128
+stflow_pairwise_hidden_dim: 128
+stflow_n_layers: 4
+stflow_n_heads: 4
+stflow_dropout: 0.2
+stflow_attn_dropout: 0.2
+stflow_n_neighbors: 8
+stflow_activation: swiglu
+
+# ---- STFlow flow-matching sampling (STFlow defaults) ----
+stflow_n_sample_steps: 5
+stflow_prior_sampler: zinb     # gaussian | uniform | zero | zinb
+stflow_zinb_logits: 0.1
+stflow_zinb_total_count: 1.0
+stflow_zinb_zi_logits: 0.0
+
+# ---- Graph edge settings (consumed by halo only; STFlow builds its
+#      own KNN graph inside SpatialTransformer) ----
+pixel_size_um: 0.46
+dist_thresh_um: 150.0
+
+# ---- Data augmentation ----
+augmentation:
+  enabled: true
+  p_flip_h: 0.5
+  p_flip_v: 0.5
+  p_rot90: 0.5
+  brightness: 0.15
+  contrast: 0.15
+  saturation: 0.1
+
+# ---- Grid + Halo training (large slides) ----
+grid_training:
+  enabled: true
+  n_spots_per_patch: 256
+  n_patches_per_slide: 3
+  n_shift_steps: 4
+  halo_dist_thresh_um: 150.0
+  cycle_mode: false
+
+# ---- Training settings ----
+epochs: 400
+lr: 1.0e-4
+encoder_lr: 1.0e-5
+wd: 1.0e-4
+img_batch_size: 32
+full_graph: false
+grad_clip: 1.0
+
+spot_split_ratios: [0.7, 0.1, 0.2]
+eval_interval: 1
+early_stop_patience: 15
+
+lr_factor: 0.5
+lr_patience: 15
+lr_threshold: 1.0e-5
+lr_min: 1.0e-6
+lr_cooldown: 0
+
+# ---- Random seeds ----
+seeds: [42, 43, 44]
+
+# ---- Device and output ----
+device: cuda
+output_root: ./runs

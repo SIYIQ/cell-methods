@@ -1,0 +1,57 @@
+# cell_HST_middle training configuration.
+#
+# Cell-level adaptation of HST-middle's HeteroST. Consumes the shared
+# cell-level data interface at /home/sb202604/cell-benchmark/processed_cell/
+# (see cell-benchmark/scripts/cell_data.py).
+
+# ---- Gene selection ----
+# Match the canonical 50-HVG subset used by cell_HST_h0mini_lp and the
+# benchmark summary; set to null to train on the full Xenium panel.
+n_top_hvgs: 50
+processed_root: /home/sb202604/cell-benchmark/processed
+
+# ---- Datasets ----
+datasets:
+  - hSkin_Melanoma
+  - hColon_Non_diseased
+  - mouse_Colon
+  - Human_Breast_Cancer
+
+# ---- HeteroST graph encoder ----
+# Heads x hidden split: HGTConv internally splits hidden_dim across heads.
+hidden_dim: 64
+n_hgt_layers: 2
+heads: 2
+dropout: 0.1
+pred_head_depth: 2
+
+# Morphological edges over cells (UNI cosine similarity top-K).
+morph_top_k: 5
+morph_sim_thresh: 0.6
+
+# Spatial hypergraph k for SpatialEx-style KNN (shared with all methods).
+num_neighbors: 7
+
+# ---- MGM (Masked Gene Modeling) ----
+# Curriculum: ramp the masking ratio from min to max across training.
+mgm:
+  enabled: false           # disabled by default: cleanest comparison with
+                           # cell_novae / cell_SpatialEx (no gene-branch leak)
+  min_ratio: 0.5
+  max_ratio: 0.8
+  ramp_epochs_frac: 0.5
+
+# ---- Training ----
+epochs: 100
+lr: 1.0e-3
+weight_decay: 0.0
+loss: mse                  # mse | pearson
+
+# Seeds (HST-middle convention).
+seeds: [42, 43, 44]
+
+# Logging / output
+output_root: ./runs
+
+# Device
+device: cuda:0

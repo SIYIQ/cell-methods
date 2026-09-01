@@ -1,0 +1,48 @@
+# Xenium single-cell benchmark download manifest
+# Columns: dataset	role	rel_path	url
+# Datasets follow SpatialEx Supplementary Table 1 (H&E-to-Omics + Panel Integration sections).
+# Each Xenium *_outs.zip already contains: cells.csv.gz, cell_feature_matrix.h5, transcripts.parquet,
+#   cell_boundaries.parquet, nucleus_boundaries.parquet, gene_panel.json, morphology images.
+# H&E + alignment CSV are downloaded separately because they live outside the outs.zip.
+#
+# Total size (all 21 files):
+#   - H&E-to-Omics (4 datasets, 9 files, ~60 GB):
+#       Human_Breast_Cancer_Rep1: 9.18 + 1.33 GB
+#       Human_Breast_Cancer_Rep2: 7.90 + 1.16 GB
+#       hColon_Non_diseased     : 12.69 + 7.15 GB
+#       mouse_Colon             : 14.31 + 1.71 GB
+#       hSkin_Melanoma          : 3.52 + 0.87 GB
+#   - Panel-Integration / FFPE big (IDC_Big_1 + IDC_Big_2, ~111 GB):
+#       IDC_Big_1: 48.29 + 8.23 GB
+#       IDC_Big_2: 46.76 + 8.06 GB
+#   - Alignment CSVs: <1 MB each
+#
+# Notes:
+#   - hColon: outs.zip is the "Add_on" sample; the post-Xenium H&E + alignment csv only
+#     ship with the matched "Base" sample (same physical section, different panel scope).
+#   - hSkin: outs.zip is from xeniumranger reprocessing (1.7.0); H&E/alignment from the
+#     base 1.6.0 release of the same section.
+#   - IDC_Big: 10x only provides the un-aligned H&E (he_unaligned_image.ome.tif). The
+#     imagealignment.csv lets you transform it onto the Xenium morphology frame.
+#
+Human_Breast_Cancer_Rep1	outs	Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip	https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip
+Human_Breast_Cancer_Rep1	he	Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_he_image.ome.tif	https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_he_image.ome.tif
+Human_Breast_Cancer_Rep1	align	Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_he_imagealignment.csv	https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_he_imagealignment.csv
+Human_Breast_Cancer_Rep2	outs	Human_Breast_Cancer_Rep2/Xenium_FFPE_Human_Breast_Cancer_Rep2_outs.zip	https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep2/Xenium_FFPE_Human_Breast_Cancer_Rep2_outs.zip
+Human_Breast_Cancer_Rep2	he	Human_Breast_Cancer_Rep2/Xenium_FFPE_Human_Breast_Cancer_Rep2_he_image.ome.tif	https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep2/Xenium_FFPE_Human_Breast_Cancer_Rep2_he_image.ome.tif
+Human_Breast_Cancer_Rep2	align	Human_Breast_Cancer_Rep2/Xenium_FFPE_Human_Breast_Cancer_Rep2_he_imagealignment.csv	https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep2/Xenium_FFPE_Human_Breast_Cancer_Rep2_he_imagealignment.csv
+hColon_Non_diseased	outs	hColon_Non_diseased/Xenium_V1_hColon_Non_diseased_Add_on_FFPE_outs.zip	https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hColon_Non_diseased_Add_on_FFPE/Xenium_V1_hColon_Non_diseased_Add_on_FFPE_outs.zip
+hColon_Non_diseased	he	hColon_Non_diseased/Xenium_V1_hColon_Non_diseased_Base_FFPE_he_image.ome.tif	https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hColon_Non_diseased_Base_FFPE/Xenium_V1_hColon_Non_diseased_Base_FFPE_he_image.ome.tif
+hColon_Non_diseased	align	hColon_Non_diseased/Xenium_V1_hColon_Non_diseased_Base_FFPE_he_imagealignment.csv	https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hColon_Non_diseased_Base_FFPE/Xenium_V1_hColon_Non_diseased_Base_FFPE_he_imagealignment.csv
+mouse_Colon	outs	mouse_Colon/Xenium_V1_mouse_Colon_FF_outs.zip	https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_mouse_Colon_FF/Xenium_V1_mouse_Colon_FF_outs.zip
+mouse_Colon	he	mouse_Colon/Xenium_V1_mouse_Colon_FF_he_image.ome.tif	https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_mouse_Colon_FF/Xenium_V1_mouse_Colon_FF_he_image.ome.tif
+mouse_Colon	align	mouse_Colon/Xenium_V1_mouse_Colon_FF_he_imagealignment.csv	https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_mouse_Colon_FF/Xenium_V1_mouse_Colon_FF_he_imagealignment.csv
+hSkin_Melanoma	outs	hSkin_Melanoma/Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE_outs.zip	https://cf.10xgenomics.com/samples/xenium/1.7.0/Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE/Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE_outs.zip
+hSkin_Melanoma	he	hSkin_Melanoma/Xenium_V1_hSkin_Melanoma_Base_FFPE_he_image.ome.tif	https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hSkin_Melanoma_Base_FFPE/Xenium_V1_hSkin_Melanoma_Base_FFPE_he_image.ome.tif
+hSkin_Melanoma	align	hSkin_Melanoma/Xenium_V1_hSkin_Melanoma_Base_FFPE_he_imagealignment.csv	https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hSkin_Melanoma_Base_FFPE/Xenium_V1_hSkin_Melanoma_Base_FFPE_he_imagealignment.csv
+Human_Breast_IDC_Big_Rep1	outs	Human_Breast_IDC_Big_Rep1/Xenium_V1_FFPE_Human_Breast_IDC_Big_1_outs.zip	https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC_Big_1/Xenium_V1_FFPE_Human_Breast_IDC_Big_1_outs.zip
+Human_Breast_IDC_Big_Rep1	he	Human_Breast_IDC_Big_Rep1/Xenium_V1_FFPE_Human_Breast_IDC_Big_1_he_unaligned_image.ome.tif	https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC_Big_1/Xenium_V1_FFPE_Human_Breast_IDC_Big_1_he_unaligned_image.ome.tif
+Human_Breast_IDC_Big_Rep1	align	Human_Breast_IDC_Big_Rep1/Xenium_V1_FFPE_Human_Breast_IDC_Big_1_he_imagealignment.csv	https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC_Big_1/Xenium_V1_FFPE_Human_Breast_IDC_Big_1_he_imagealignment.csv
+Human_Breast_IDC_Big_Rep2	outs	Human_Breast_IDC_Big_Rep2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2_outs.zip	https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2_outs.zip
+Human_Breast_IDC_Big_Rep2	he	Human_Breast_IDC_Big_Rep2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2_he_unaligned_image.ome.tif	https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2_he_unaligned_image.ome.tif
+Human_Breast_IDC_Big_Rep2	align	Human_Breast_IDC_Big_Rep2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2_he_imagealignment.csv	https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2/Xenium_V1_FFPE_Human_Breast_IDC_Big_2_he_imagealignment.csv
